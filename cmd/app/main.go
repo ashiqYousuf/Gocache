@@ -8,12 +8,12 @@ import (
 )
 
 type application struct {
-	cache *cache.Cache[string, int]
+	cache cache.Cacher
 }
 
 func main() {
 	app := &application{
-		cache: cache.New[string, int](),
+		cache: cache.NewTTLCache[any, any](),
 	}
 
 	http.HandleFunc("/get", app.handleGetValue)

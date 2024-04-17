@@ -1,6 +1,10 @@
 package cache
 
-import "sync"
+import (
+	"log"
+	"sync"
+	"time"
+)
 
 // Cache is a basic in-memory key-value cache implementation.
 // Mutex is for controlling concurrent access to the cache.
@@ -9,20 +13,16 @@ type Cache[K comparable, V any] struct {
 	mu    sync.Mutex
 }
 
-type RenderKeyValue struct {
-	Key   any `json:"key"`
-	Value any `json:"value"`
-}
-
 // New creates a new Cache instance.
-func New[K comparable, V any]() *Cache[K, V] {
+func NewCache[K comparable, V any]() *Cache[K, V] {
+	log.Println("Using without expiry caching system")
 	return &Cache[K, V]{
 		items: make(map[K]V),
 	}
 }
 
 // Set adds or updates a key-value pair in the cache.
-func (c *Cache[K, V]) Set(key K, value V) {
+func (c *Cache[K, V]) Set(key K, value V, ttl time.Duration) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	c.items[key] = value
