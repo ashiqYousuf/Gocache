@@ -14,6 +14,7 @@ type application struct {
 func main() {
 	app := &application{
 		cache: cache.NewTTLCache[any, any](),
+		// cache: cache.NewCache[any, any](),
 	}
 
 	http.HandleFunc("/get", app.handleGetValue)
